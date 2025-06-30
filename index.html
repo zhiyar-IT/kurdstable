@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kurdistan Mafia Table</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Mafia style font and icons -->
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    body {
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+      color: #f5f5f5;
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 1.2s;
+    }
+    header {
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 2.8rem;
+      letter-spacing: 2px;
+      text-align: center;
+      padding: 36px 0 10px 0;
+      color: #e63946;
+      text-shadow: 0 2px 16px #000, 0 0 2px #fff;
+      border-bottom: 2px solid #e63946;
+      margin-bottom: 24px;
+      background: rgba(0,0,0,0.3);
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #f1faee;
+      margin-bottom: 38px;
+      letter-spacing: 1px;
+      font-family: 'Roboto', Arial, sans-serif;
+    }
+    .mafia-members {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .member-card {
+      background: linear-gradient(135deg, #232526 60%, #1a1a1a 100%);
+      border-radius: 18px;
+      box-shadow: 0 6px 32px #000a, 0 1px 0 #e63946;
+      padding: 28px 24px 18px 24px;
+      width: 320px;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .member-card:hover {
+      transform: translateY(-10px) scale(1.04);
+      box-shadow: 0 12px 48px #e6394633, 0 1px 0 #e63946;
+      z-index: 2;
+    }
+    .member-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #e63946;
+      box-shadow: 0 4px 24px #000a;
+      margin: 0 auto 18px auto;
+      display: block;
+      transition: box-shadow 0.3s, transform 0.4s;
+      background: #222;
+      cursor: pointer;
+    }
+    .member-photo.animated {
+      animation: mafiaPulse 0.7s;
+      box-shadow: 0 0 0 8px #e6394633, 0 4px 24px #000a;
+      transform: scale(1.13) rotate(-2deg);
+    }
+    @keyframes mafiaPulse {
+      0% { box-shadow: 0 0 0 0 #e6394633; transform: scale(1) rotate(0);}
+      60% { box-shadow: 0 0 0 12px #e6394633; transform: scale(1.15) rotate(-3deg);}
+      100% { box-shadow: 0 0 0 8px #e6394633; transform: scale(1.13) rotate(-2deg);}
+    }
+    .member-rank {
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 1.3rem;
+      color: #e63946;
+      margin-bottom: 4px;
+      text-shadow: 0 1px 2px #000;
+      letter-spacing: 1px;
+    }
+    .member-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .member-desc {
+      font-size: 1.05rem;
+      color: #f1faee;
+      margin-bottom: 10px;
+      min-height: 48px;
+      transition: opacity 0.3s;
+    }
+    .member-works {
+      font-size: 0.98rem;
+      color: #a8dadc;
+      margin-bottom: 8px;
+      min-height: 32px;
+      font-style: italic;
+    }
+    .member-extra {
+      font-size: 0.95rem;
+      color: #bdbdbd;
+      margin-bottom: 6px;
+      min-height: 24px;
+    }
+    .member-money {
+      font-size: 1.05rem;
+      color: #ffd700;
+      margin-bottom: 8px;
+      font-weight: bold;
+      min-height: 24px;
+    }
+    .member-intel {
+      font-size: 0.98rem;
+      color: #f1faee;
+      margin-bottom: 8px;
+      min-height: 32px;
+      background: #232526;
+      border-radius: 8px;
+      padding: 8px 10px;
+      border: 1px solid #e63946;
+      box-shadow: 0 1px 8px #0003;
+    }
+    .guards-section {
+      margin-top: 16px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 10px 10px 8px 10px;
+      box-shadow: 0 2px 8px #0005;
+    }
+    .guards-title {
+      color: #e63946;
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+    .guards-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      min-height: 24px;
+      margin-bottom: 8px;
+    }
+    .guard-card {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(90deg, #232526 70%, #e6394633 100%);
+      border-radius: 14px;
+      box-shadow: 0 2px 8px #0003;
+      padding: 6px 14px 6px 10px;
+      min-width: 120px;
+      position: relative;
+      transition: box-shadow 0.2s;
+    }
+    .guard-card:hover {
+      box-shadow: 0 4px 16px #e6394633;
+    }
+    .guard-avatar {
+      width: 32px;
+      height: 32px;
+      background: #e63946;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-left: 10px;
+      box-shadow: 0 1px 4px #0005;
+    }
+    .guard-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .guard-name {
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 1px;
+      font-size: 1.05rem;
+    }
+    .remove-guard-btn {
+      background: none;
+      border: none;
+      color: #ffd700;
+      font-size: 1.1rem;
+      margin-left: 2px;
+      cursor: pointer;
+      transition: color 0.18s;
+      padding: 2px 4px;
+    }
+    .remove-guard-btn:hover {
+      color: #e63946;
+    }
+    .no-guards {
+      color: #bdbdbd;
+      font-style: italic;
+      padding: 4px 0 4px 0;
+      font-size: 0.98rem;
+    }
+    .add-guard-form {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .add-guard-form input {
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid #e63946;
+      background: #232526;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .add-guard-form button {
+      background: #e63946;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 14px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.18s;
+      display: flex;
+      align-items: center;
+    }
+    .add-guard-form button:hover {
+      background: #b71c1c;
+    }
+    .mafia-table-section {
+      margin: 60px auto 30px auto;
+      max-width: 900px;
+      background: #1a1a1a;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #000a;
+      padding: 32px 18px 24px 18px;
+    }
+    .mafia-table-title {
+      font-family: 'UnifrakturCook', cursive;
+      color: #e63946;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+    table.mafia-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #232526;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+    .mafia-table th, .mafia-table td {
+      padding: 12px 8px;
+      border-bottom: 1px solid #444;
+      text-align: center;
+      font-size: 1.08rem;
+    }
+    .mafia-table th {
+      background: #e63946;
+      color: #fff;
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+    }
+    .mafia-table tr:last-child td {
+      border-bottom: none;
+    }
+    .rank-badge {
+      background: #e63946;
+      color: #fff;
+      border-radius: 10px;
+      padding: 2px 12px;
+      font-size: 1rem;
+      font-family: 'UnifrakturCook', cursive;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 1px 4px #0005;
+      margin-bottom: 2px;
+      display: inline-block;
+    }
+    .leader-row {
+      background: #e6394633;
+      font-weight: bold;
+    }
+    /* Intelligence in Pakistan Section */
+    .intel-section {
+      margin: 60px auto 30px auto;
+      max-width: 900px;
+      background: #181a1b;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #000a;
+      padding: 32px 18px 24px 18px;
+      direction: ltr;
+    }
+    .intel-title {
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .intel-desc {
+      color: #f1faee;
+      font-size: 1.15rem;
+      text-align: center;
+      margin-bottom: 22px;
+      font-family: 'Roboto', Arial, sans-serif;
+    }
+    .intel-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .intel-img {
+      width: 180px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 3px solid #e63946;
+      box-shadow: 0 2px 12px #000a;
+      transition: transform 0.25s, box-shadow 0.25s;
+      background: #232526;
+      cursor: pointer;
+    }
+    .intel-img:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 8px 32px #ffd70055;
+      border-color: #ffd700;
+    }
+    .fog-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10,10,10,0.82);
+      z-index: 1000;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      animation: fogIn 0.4s;
+    }
+    @keyframes fogIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .fog-content {
+      margin-top: 60px;
+      background: rgba(30,30,30,0.98);
+      border-radius: 22px;
+      box-shadow: 0 8px 48px #000b;
+      padding: 36px 28px 28px 28px;
+      position: relative;
+      min-width: 320px;
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      z-index: 1001;
+      animation: fogContentIn 0.5s;
+    }
+    @keyframes fogContentIn {
+      from { transform: scale(0.95) translateY(40px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .fog-close-btn {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      background: #e63946;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      z-index: 1002;
+      box-shadow: 0 2px 8px #0005;
+      transition: background 0.18s;
+    }
+    .fog-close-btn:hover {
+      background: #b71c1c;
+    }
+    .fog-content .member-photo {
+      box-shadow: 0 0 0 8px #e6394633, 0 4px 24px #000a;
+      transform: scale(1.13) rotate(-2deg);
+      margin-bottom: 18px;
+    }
+    @media (max-width: 600px) {
+      .fog-content { padding: 12px 2vw 12px 2vw; }
+    }
+    @media (max-width: 1100px) {
+      .mafia-members { flex-direction: column; align-items: center; }
+      .member-card { width: 95vw; max-width: 340px; }
+      .mafia-table-section, .intel-section { max-width: 98vw; }
+    }
+    @media (max-width: 600px) {
+      header { font-size: 1.5rem; }
+      .mafia-table-title, .intel-title { font-size: 1.2rem; }
+      .member-card { padding: 16px 6vw 12px 6vw; }
+      .intel-img { width: 98vw; max-width: 98vw; height: 90px; }
+    }
+    .smoke-bg {
+      pointer-events: none;
+      position: fixed;
+      z-index: 0;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: transparent;
+      overflow: hidden;
+    }
+    .smoke {
+      position: absolute;
+      width: 220px;
+      height: 120px;
+      background: radial-gradient(ellipse at center, #fff2 0%, #fff0 80%);
+      opacity: 0.18;
+      animation: smokeMove 18s linear infinite;
+      border-radius: 50%;
+      filter: blur(8px);
+    }
+    @keyframes smokeMove {
+      0% { transform: translateY(100vh) scale(1) rotate(0deg);}
+      100% { transform: translateY(-20vh) scale(1.3) rotate(12deg);}
+    }
+    @keyframes spinLogo {
+      0% { transform: scale(0.7) rotate(-60deg); opacity:0;}
+      60% { transform: scale(1.1) rotate(10deg); opacity:1;}
+      100% { transform: scale(1) rotate(0deg); opacity:1;}
+    }
+    .timeline-section {
+      margin: 60px auto 30px auto;
+      max-width: 900px;
+      background: #181a1b;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #000a;
+      padding: 32px 18px 24px 18px;
+    }
+    .timeline-title {
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .timeline-event {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .timeline-icon {
+      font-size: 2rem;
+      color: #e63946;
+      min-width: 40px;
+      text-align: center;
+    }
+    .timeline-content {
+      background: #232526;
+      border-radius: 10px;
+      padding: 10px 18px;
+      box-shadow: 0 2px 8px #0005;
+      flex: 1;
+    }
+    .timeline-date {
+      color: #ffd700;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 2px;
+    }
+    .timeline-desc {
+      color: #f1faee;
+      font-size: 1.05rem;
+    }
+
+    .map-section {
+      margin: 60px auto 30px auto;
+      max-width: 900px;
+      background: #181a1b;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #000a;
+      padding: 32px 18px 24px 18px;
+    }
+    .map-title {
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .map-container {
+      position: relative;
+      text-align: center;
+    }
+    .map-img {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px #000a;
+      margin-bottom: 12px;
+    }
+    .territory-info {
+      margin-top: 10px;
+      color: #ffd700;
+      font-size: 1.1rem;
+      font-family: 'Roboto', Arial, sans-serif;
+      min-height: 24px;
+    }
+
+    .code-section {
+      margin: 60px auto 30px auto;
+      max-width: 700px;
+      background: #232526;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #000a;
+      padding: 32px 18px 24px 18px;
+    }
+    .code-title {
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .code-scroll {
+      background: #181a1b;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #0005;
+      padding: 24px 18px;
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-size: 1.15rem;
+      border: 2px solid #ffd70055;
+      background-image: url('parchment.png');
+      background-size: cover;
+      background-blend-mode: multiply;
+    }
+    .code-scroll ul {
+      margin: 0;
+      padding-left: 24px;
+    }
+    .code-scroll li {
+      margin-bottom: 12px;
+    }
+
+    .member-rank i.fa-crown { color: #ffd700; }
+    .member-rank i.fa-gun { color: #e63946; }
+    .member-rank i.fa-user-secret { color: #a8dadc; }
+    .member-rank i.fa-user-shield { color: #bdbdbd; }
+
+    .member-card, .add-guard-form button {
+      transition: box-shadow 0.18s, transform 0.12s;
+    }
+    .add-guard-form button:active {
+      box-shadow: 0 1px 4px #000a inset;
+      transform: scale(0.96);
+      background: #ffd700;
+      color: #181a1a;
+    }
+    .member-card:hover {
+      box-shadow: 0 0 0 8px #ffd70033, 0 12px 48px #e6394633, 0 1px 0 #e63946;
+      background: linear-gradient(135deg, #232526 60%, #2d2d2d 100%);
+    }
+    .member-photo:hover {
+      box-shadow: 0 0 0 8px #ffd70055, 0 4px 24px #000a;
+      filter: brightness(1.08);
+      position: relative;
+    }
+    .member-photo:hover::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 40px; height: 40px;
+      background: url('bullet-hole.png') no-repeat center/contain;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+
+    .battle-section {
+      margin: 60px auto 30px auto;
+      max-width: 900px;
+      background: #181a1b;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #000a;
+      padding: 32px 18px 24px 18px;
+    }
+    .battle-title {
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .battle-arena {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .mafia-team {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .mafia-team.enemy {
+      margin-top: 12px;
+    }
+    .fighter {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 1;
+      transition: opacity 0.4s, filter 0.4s;
+    }
+    .fighter-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 4px solid var(--color, #ffd700);
+      box-shadow: 0 2px 12px #000a;
+      background: #232526;
+      object-fit: cover;
+      margin-bottom: 6px;
+      transition: filter 0.3s, box-shadow 0.3s;
+    }
+    .fighter-name {
+      color: var(--color, #ffd700);
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 1.1rem;
+      text-shadow: 0 1px 2px #000;
+    }
+    .vs-label {
+      font-size: 2.5rem;
+      color: #e63946;
+      font-family: 'UnifrakturCook', cursive;
+      margin: 10px 0 10px 0;
+      letter-spacing: 4px;
+      text-shadow: 0 2px 8px #000a;
+      transition: transform 0.3s;
+    }
+    .battle-btn {
+      margin: 24px 0 0 0;
+      background: #ffd700;
+      color: #181a1b;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 32px;
+      font-size: 1.2rem;
+      font-family: 'UnifrakturCook', cursive;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0005;
+      transition: background 0.18s, transform 0.12s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .battle-btn:active {
+      background: #e63946;
+      color: #fff;
+      transform: scale(0.96);
+    }
+    .battle-log {
+      margin-top: 18px;
+      min-height: 40px;
+      color: #ffd700;
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .fighter.hit {
+      filter: grayscale(1) brightness(0.7) blur(1px);
+      opacity: 0.5;
+      transition: filter 0.4s, opacity 0.4s;
+    }
+    .fighter.win {
+      box-shadow: 0 0 24px 8px #ffd70099;
+      animation: winnerPulse 1.2s infinite alternate;
+    }
+    @keyframes winnerPulse {
+      0% { box-shadow: 0 0 24px 8px #ffd70099; }
+      100% { box-shadow: 0 0 36px 16px #ffd700cc; }
+    }
+    .fighter.enemy-fighter.win {
+      box-shadow: 0 0 24px 8px #e6394699;
+      animation: winnerPulseRed 1.2s infinite alternate;
+    }
+    @keyframes winnerPulseRed {
+      0% { box-shadow: 0 0 24px 8px #e6394699; }
+      100% { box-shadow: 0 0 36px 16px #e63946cc; }
+    }
+
+    @media (max-width: 700px) {
+      .mafia-team { gap: 10px; }
+      .fighter-img { width: 54px; height: 54px; }
+      .battle-title { font-size: 1.2rem; }
+    }
+
+    .members-story-section {
+      margin: 60px auto 30px auto;
+      max-width: 950px;
+      background: #181a1b;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #000a;
+      padding: 32px 18px 24px 18px;
+    }
+    .members-story-title {
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 28px;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .members-story-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      justify-content: center;
+    }
+    .member-story-card {
+      background: #232526;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px #0007;
+      padding: 22px 18px 16px 18px;
+      width: 390px;
+      min-width: 260px;
+      max-width: 98vw;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .member-story-card:hover {
+      box-shadow: 0 6px 32px #ffd70033, 0 2px 12px #e6394633;
+      transform: translateY(-6px) scale(1.03);
+    }
+    .member-story-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 10px;
+    }
+    .story-photo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffd700;
+      box-shadow: 0 2px 8px #000a;
+      background: #222;
+    }
+    .story-name {
+      font-size: 1.25rem;
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .story-rank {
+      font-size: 1rem;
+      color: #e63946;
+      font-family: 'UnifrakturCook', cursive;
+      margin-left: 8px;
+    }
+    .story-money {
+      color: #ffd700;
+      font-size: 1.05rem;
+      margin-top: 2px;
+    }
+    .story-body {
+      color: #f1faee;
+      font-size: 1.05rem;
+      margin-top: 6px;
+      line-height: 1.6;
+      font-family: 'Roboto', Arial, sans-serif;
+    }
+    @media (max-width: 900px) {
+      .members-story-list { flex-direction: column; align-items: center; }
+      .member-story-card { width: 98vw; max-width: 420px; }
+    }
+
+    .epic-story-section {
+      margin: 60px auto 30px auto;
+      max-width: 900px;
+      background: #181a1b;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #000a;
+      padding: 32px 18px 24px 18px;
+    }
+    .epic-story-title {
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 28px;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .epic-story-body {
+      color: #f1faee;
+      font-size: 1.13rem;
+      line-height: 1.8;
+      font-family: 'Roboto', Arial, sans-serif;
+      padding: 0 6vw;
+    }
+    .epic-story-body b {
+      color: #ffd700;
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 1.08em;
+    }
+    @media (max-width: 900px) {
+      .epic-story-body { padding: 0 2vw; }
+    }
+
+    .blood-betrayal-section {
+      margin: 60px auto 30px auto;
+      max-width: 900px;
+      background: #181a1b;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #000a;
+      padding: 32px 18px 24px 18px;
+    }
+    .blood-betrayal-title {
+      font-family: 'UnifrakturCook', cursive;
+      color: #ffd700;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 28px;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+    .blood-betrayal-body {
+      color: #f1faee;
+      font-size: 1.13rem;
+      line-height: 1.8;
+      font-family: 'Roboto', Arial, sans-serif;
+      padding: 0 6vw;
+    }
+    .blood-betrayal-body b {
+      color: #ffd700;
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 1.08em;
+    }
+    @media (max-width: 900px) {
+      .blood-betrayal-body { padding: 0 2vw; }
+    }
+  </style>
+</head>
+<body>
+  <div id="introSplash" style="position:fixed;z-index:2000;top:0;left:0;width:100vw;height:100vh;background:#111;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 1s;opacity:1;">
+    <div id="logoAnim" style="animation:spinLogo 2.5s cubic-bezier(.4,2,.6,1) 1;">
+      <img src="mafia-crest.png" alt="Mafia Crest" style="height:110px;filter:drop-shadow(0 0 24px #e63946);">
+    </div>
+    <div style="color:#fff;font-family:'UnifrakturCook',cursive;font-size:2.2rem;margin-top:18px;letter-spacing:2px;text-shadow:0 2px 16px #000;">
+      Kurdistan Mafia Table
+    </div>
+  </div>
+  <audio id="bgMusic" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12c6b1b1e7.mp3" loop></audio>
+  <button id="musicToggle" title="Toggle Music" style="position:fixed;bottom:24px;right:24px;z-index:1200;background:#181a1b;border:none;border-radius:50%;width:48px;height:48px;box-shadow:0 2px 12px #000a;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+    <i id="musicIcon" class="fa-solid fa-volume-xmark" style="color:#ffd700;font-size:1.5rem;"></i>
+  </button>
+  <div class="smoke-bg"></div>
+
+  <!-- Mafia Family Crest in Header -->
+  <header>
+    <img src="mafia-crest.png" alt="Mafia Crest" style="height:60px;vertical-align:middle;margin-right:16px;filter:drop-shadow(0 2px 8px #e63946);">
+    Kurdistan Mafia Table
+  </header>
+
+  <div class="subtitle">
+    The four brothers who rule the underworld of Kurdistan.<br>
+    Click on their photos to reveal their secrets.
+  </div>
+  <section class="mafia-members" id="mafiaMembers">
+    <!-- Member cards will be injected here -->
+  </section>
+
+  <!-- Add this section after your .mafia-members section and before the mafia-table-section -->
+
+  <section class="members-story-section">
+    <div class="members-story-title"><i class="fa-solid fa-book-open"></i> The Untold Stories of the Four Brothers</div>
+    <div class="members-story-list">
+
+      <!-- Zhiyar Story -->
+      <div class="member-story-card">
+        <div class="member-story-header">
+          <img src="zhiko.jpg" alt="Zhiyar" class="story-photo">
+          <div>
+            <div class="story-name">Zhiyar <span class="story-rank">Leader</span></div>
+            <div class="story-money"><i class="fa-solid fa-money-bill-wave"></i> $1,500,000+ in assets</div>
+          </div>
+        </div>
+        <div class="story-body">
+          <b>How it started:</b> Zhiyar grew up in Erbil, the son of a respected merchant. He was always the strategist, outsmarting rivals in street games and later in business. At 18, he orchestrated his first major deal, outwitting a Turkish syndicate and earning his reputation.<br><br>
+          <b>Brotherhood:</b> He met Sherwan in high school after a street fight turned into a lifelong friendship. Yasr joined after Zhiyar helped him escape a police raid, and Ramin was recruited for his loyalty and strength.<br><br>
+          <b>Love & Loyalty:</b> Zhiyar fell in love with a Turkish diplomat’s daughter, but their relationship was forbidden. He still keeps her photo in his wallet.<br><br>
+          <b>Money Moves:</b> Zhiyar controls businesses in Erbil, Istanbul, and Dubai. He’s rumored to have gold hidden in the Swiss Alps and crypto wallets worth millions.<br><br>
+          <b>Secret:</b> He once negotiated a truce between three rival gangs in one night—without a single shot fired.
+        </div>
+      </div>
+
+      <!-- Sherwan Story -->
+      <div class="member-story-card">
+        <div class="member-story-header">
+          <img src="sherwan.jpg" alt="Sherwan" class="story-photo">
+          <div>
+            <div class="story-name">Sherwan <span class="story-rank">Left Hand</span></div>
+            <div class="story-money"><i class="fa-solid fa-money-bill-wave"></i> $500,000+ in weapons & security</div>
+          </div>
+        </div>
+        <div class="story-body">
+          <b>How it started:</b> Born in Sulaymaniyah, Sherwan was a street fighter and arms dealer by 16. He met Zhiyar during a brawl, and their mutual respect turned into a partnership.<br><br>
+          <b>Brotherhood:</b> Sherwan is fiercely loyal, protecting the Table at all costs. He and Ramin once fought off a rival gang together, cementing their bond.<br><br>
+          <b>Love & Loyalty:</b> He fell for a Russian arms dealer, but their love was doomed by business. He still wears her ring on a chain.<br><br>
+          <b>Money Moves:</b> Sherwan runs a private security firm and smuggles rare firearms. He’s known for his collection of antique pistols.<br><br>
+          <b>Secret:</b> He once single-handedly disarmed a police convoy to save the Table’s shipment.
+        </div>
+      </div>
+
+      <!-- Yasr Story -->
+      <div class="member-story-card">
+        <div class="member-story-header">
+          <img src="yasr.jpg" alt="Yasr" class="story-photo">
+          <div>
+            <div class="story-name">Yasr <span class="story-rank">Consigliere</span></div>
+            <div class="story-money"><i class="fa-solid fa-money-bill-wave"></i> $700,000+ in crypto & cash</div>
+          </div>
+        </div>
+        <div class="story-body">
+          <b>How it started:</b> Yasr was a tech prodigy from Duhok, hacking into bank systems by age 15. Zhiyar saw his potential and brought him into the Table after a daring escape from the authorities.<br><br>
+          <b>Brotherhood:</b> Yasr is the Table’s brain, trusted with secrets and strategy. He and Zhiyar share a love for chess and late-night planning.<br><br>
+          <b>Love & Loyalty:</b> He fell for a Kurdish journalist, but their relationship ended when she discovered his double life.<br><br>
+          <b>Money Moves:</b> Yasr manages the Table’s crypto wallets, laundering money through tech startups and digital currencies.<br><br>
+          <b>Secret:</b> He once hacked a rival mafia’s entire operation, erasing their digital footprint overnight.
+        </div>
+      </div>
+
+      <!-- Ramin Story -->
+      <div class="member-story-card">
+        <div class="member-story-header">
+          <img src="ramo.jpg" alt="Ramin" class="story-photo">
+          <div>
+            <div class="story-name">Ramin <span class="story-rank">Enforcer</span></div>
+            <div class="story-money"><i class="fa-solid fa-money-bill-wave"></i> $300,000+ in operations</div>
+          </div>
+        </div>
+        <div class="story-body">
+          <b>How it started:</b> Ramin grew up in Kirkuk, known for his strength and sense of justice. He was recruited after saving Sherwan from an ambush.<br><br>
+          <b>Brotherhood:</b> Ramin is the Table’s shield, feared by enemies and respected by allies. He and Sherwan are inseparable in battle.<br><br>
+          <b>Love & Loyalty:</b> He loved a singer from Istanbul, but she vanished after a police crackdown. He still visits her favorite café every year.<br><br>
+          <b>Money Moves:</b> Ramin runs underground casinos and protection rackets, funneling cash to the Table.<br><br>
+          <b>Secret:</b> He once took a bullet for Zhiyar, earning a scar and the Table’s eternal trust.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Add this section after the .members-story-section and before the .mafia-table-section -->
+
+  <section class="epic-story-section">
+    <div class="epic-story-title"><i class="fa-solid fa-dragon"></i> چیرۆکی مەزن: چوار برا </div>
+    <div class="epic-story-body">
+      <p>
+        <b>٢٠١٥: دەستپێکردنی بەرزبوون</b><br>
+        ساڵی ٢٠١٥ دەستپێکی سەردەمی نوێ بوو بۆ ژیانی تاریکی کوردستان. ژیار، ئەوەی هەموو پلانەکان دەداتە جێ، یەکەم شەڕی گەورەی خشتەی مافیا بەدەستی خۆی گەیاندە سەرکەوتن—دەستبەسەرکردنی قازینۆکانی هەولێر لە دەستی مافیای تورک. شەڕەکە توند بوو. شێروان، دەستی چەپەکەی، تیرێکی گرت بۆ پاراستنی ژیار لە لایەن کوشتەری تورکەوە. یاسر، ئەوەی هەموو زانیاریەکان دەکاتەوە، سیستەمی چاودێری شارەکە هەک کرد و پۆلیسەکان بە تەواوی کۆری کرد. ڕامین، ئەوەی هەموو شتێکی بە هێزە، لە شەقامەکاندا پێشەنگی کرد و هەموو دژمنەکان تێکشکاند. ئەو شەوە، خشتە زیاتر لە ٢٠٠ هەزار دۆلار بەدەست هێنا، بەڵام زخمەکان هەمیشەیی بوون.
+      </p>
+      <p>
+        <b>٢٠١٦: جەنگی ئیتاڵیان</b><br>
+        پڕ لە پارە، خشتە بەرزبووە بۆ ئیستانبول و مافیای ئیتاڵیای خەمبار کرد. ئیتاڵیان باشترینەکانیان نارد—دۆن ڤیتۆریۆ و مارکۆ. شەقامەکانی ئیستانبول بوونە شەطرەنج. یاسر پەیامە نهێنیەکان دەستگیر کرد و پلانێکی کوشتنی ژیار لە بازاڕی گەورە فاش کرد. شێروان و ڕامین دامەزراندن و گرووپی مارکۆیان تێکشکاند. لە ناو شەڕەکەدا، ڕامین لە لایەن مەهدی، پیاوی خۆی، بریندار کرا—کە بۆ پارەی ئیتاڵی خەیانەت کرد. شێروان ڕامینەوە بە ژیان گەیاند و ژیار لەگەڵ دۆن ڤیتۆریۆ ڕێککەوتنێکی نهێنی کرد بە بهای ٥٠٠ هەزار دۆلار و سوێندێک کە هەرگیز بۆ ڕۆما نەچێت.
+      </p>
+      <p>
+        <b>٢٠١٧: خیانەتی خوێن</b><br>
+        خیانەتی مەهدی ڕامین تێکشکاند. دووبارە لە سلێمانی یەکدییان بینی، لەمجارە لە ژوورێکی بەتاڵ. شەڕەکە توند بوو—دەست بە دەست، شیشەی شکراو و کینەی کۆن. ڕامین بردەوە، بەڵام مەهدی ڕوونی کرد کە ئەیحان، براستی ژیار، لەگەڵ مافیای تورکە. ئەو هەواڵە ژیار تێکشکاند. ئەو ساڵە، خشتە ٣٠٠ هەزار دۆلار لە دەستدا و باوەڕی نێوان براکان شکستی هێنا.
+      </p>
+      <p>
+        <b>٢٠١٨: یاریی دوبەی</b><br>
+        ناوی یاسر وەک هەکەر گەیشتە گوێی "شاەی دوبەی". شای دوبەی یاسر بانگەشەی کرد بۆ یارییەکی سایبەری—کەسێک بەرز دەبێت. ٤٨ کاتژمێر یاسر و شای دوبەی لە تۆڕی تاریکدا شەڕیان کرد. لە کۆتاییدا، یاسر بردەوە و ١.٢ ملیۆن دۆلاری شای دوبەی هەڵگرت. خشتە لە پێنتەهاوسی دوبەی جەژنیان کرد، بەڵام شای دوبەی سوێندی گرت بۆ تۆڵە.
+      </p>
+      <p>
+        <b>٢٠١٩: دابەزینی ئەیحان</b><br>
+        ئەیحان، براستی ژیار، گەڕایەوە بۆ هەولێر و یەکەتی مافیای تورک و کوردی ڕوونکردەوە. شارەکە بووە شەڕگە. ژیار هەوڵی ئاشتی دا، بەڵام ئەیحان خوێن داوە. لە کۆتایی شەڕێکدا لە خانووی خێزان، ئەیحان کوژرا—هەندێک دەڵێن بە دەستی ژیار، هەندێکیش دەڵێن شێروان. خشتە ٨٠٠ هەزار دۆلار لە دەستدا، بەڵام هەولێر تەواو بەدەست هێنا.
+      </p>
+      <p>
+        <b>٢٠٢٠: سیایەتی و هاوبەشبوون</b><br>
+        هێزی خشتە بەرزبوو، بەڵام دژمنەکانیش زۆر بوون. مافیای ئیتاڵیا و ڕووس هەڵدەستێن. یاسر هەموو شتێک بە زانستی سایبەری پاراست، ڕامین و شێروان دژمنەکان لە شەقامەکاندا تێکشکاند. ژیار هاوبەشبوونی نهێنی لەگەڵ بارزانیەکان دامەزراند و پارەیەکی زۆر بۆ کاروباری بارزانی و هەڵبژاردنەکان فڕاند.
+      </p>
+      <p>
+        <b>٢٠٢١: محاصەرەی ئیستانبول</b><br>
+        مافیای تورک بە سەرۆکایەتی یاماج کوچوڤالی هێرشێکی گەورەیان کردە سەر کاروباری خشتە لە ئیستانبول. براکان لە خانوویەکی پارێزراو محاصەر بوون. شێروان دوو تیر گرت، ڕامینیش لە تەقینەوەی بۆمبێک بریندار بوو. ژیار هەرگیز ڕازی نەبوو بە تسلیم بوون. بە یارمەتیدانی بارزانیەکان، فڕۆکەیەکی تایبەتیان نارد بۆ ڕزگارکردن. یاسر سیستەمی پەیوەندی دژمنەکان هەک کرد و براکان بە ٢ ملیۆن دۆلار و زخمێکی نوێ ڕزگار بوون.
+      </p>
+      <p>
+        <b>٢٠٢٢: خۆشەویستی، لەدەستدان و تۆڵە</b><br>
+        لە ناو توندوتیژی، خۆشەویستی هاتە ناو ژیان. ژیار بە نهێنی هاوسەرگیری کرد بە کچێکی دیپلۆماتێکی تورک، بە بهای هەموو شتێک. بەڵام باوکەکەی ئەو کچە، بە یارمەتیدانی هێزە تایبەتییەکانی سوریا، باوکی ژیار کوشت. ژیار بە یارمەتیدانی شێروان و یاسر تۆڵەی باوکی کرد و باوکەکەی ئەمان کوشت. ئەو کچە هەموو شتێک فێری بوو و هەوڵی کوشتنی ژیار دا، بەڵام براکی وەستاند و وتی ئەگەر ژیار بکۆژێت، خۆییش دەکۆژرێت. ژیار هەوڵی فرامۆشکردنی ئەمان دا و بە یارمەتیدانی شێروان لە ئازاری باوکەکەی تێپەڕی.
+      </p>
+      <p>
+        <b>٢٠٢٣: دامەزراوی ڕامین لە دهوک</b><br>
+        ڕامین لە خۆشەویستیەکانی زۆرە، بەڵام لەگەڵ لەیلا، سەرۆکی مافیای دهوک، جیاواز بوو. لەیلا ڕامین بە شێوەیەکی نهێنی تۆمار کرد و هەوڵی شانتاژکردنی خشتەی مافیا بە ملیۆنان دۆلار دا. بەڵام لەیلا هەڵەی کرد. یاسر ڕێگەی دیجیتاڵی فاش کرد، شێروان پارێزگاکانی وەستاند و ژیار ڕێککەوتنێکی نهێنی کرد. لەیلا ون بوو و ناوی خشتە بەرزتر بوو.
+      </p>
+      <p>
+        <b>٢٠٢٣: دزینەوەی دوبەی</b><br>
+        شای دوبەی گەڕایەوە بۆ تۆڵەی یاسر. براکی بچوکی یاسر دزرا و ٥ ملیۆن بیتکۆین داوا کرد. خشتە هێرشێکی دڵەڕاو کرد، فڕۆکەیەکی تایبەتیان نارد و ڕامین لە دەست بە دەست شەڕی کرد. شێروان لە سەر فڕۆکەیەکە گاردەکان کوشت و ژیار ڕێککەوتنێکی نهێنی کرد. شای دوبەی ڕازی بوو، بەڵام ڤایرۆسێکی دیجیتاڵی لە پارەکانی خشتە جێهێشت. یاسر هەفتەکان کار کرد و ٣ ملیۆن دۆلار پاراست.
+      </p>
+      <p>
+        <b>٢٠٢٤: بەرزبوونی خشتە</b><br>
+        دژمنەکان تێکشکاندن و خشتە هەموو هێزەکانی کۆکردەوە. ژیار هاوبەشبوونی نهێنی لەگەڵ بارزانیەکان کرد و ملیۆنان دۆلار بەدەست هێنا. شێروان تۆڕی چەک بەرز کرد بۆ سوریا و لوبنان. یاسر ئیمپراتۆریەتی سایبەری درووست کرد و ڕامین قازینۆی نهێنی کرا. بەرەو کۆتایی ساڵی ٢٠٢٤، خشتە زیاتر لە ١٠ ملیۆن دۆلار بەدەست هێنا.
+      </p>
+      <p>
+        <b>٢٠٢٥: هێڵەکان ماون</b><br>
+        بەڵام ئاشتی هەمیشەیی نییە. ئایەنی ئەیحان، مەهدی و شای دوبەی هێشتا خشتە تێکدەهێنن. ژیار، ئێستا دەستانە، دەڵێن هەموو هێزی بارزانی لە دەستی خۆیە. شێروان نەتەوەیەکی نوێ فێر دەکات، یاسر ناوی لە هەموو فۆرومی هەکەرەکاندا هەیە و ڕامین هێشتا پاراستنی خشتە دەکات. چیرۆکەکە هێشتا بەسەر نەچووە.
+      </p>
+      <p>
+        <b>پارە، هێز و میراث</b><br>
+        لە ٢٠١٥ تا ئێستا، چیرۆکی خشتە لە خوێن و زەڕ نووسراوە. ملیۆنان لە جەنگ لەدەستدا، ملیۆنانیش بەدەست هێنا و هەر بهایەک بۆ وەفاداری دا. دژمنەکان زۆرن، بەڵام پیوەندی براوەری تێک نابێت. جیهان هەرگیز ڕاستی تەواوی بەرزبوونی خشتە نەزانێت—بەڵام لە سیایەتی کوردستان، ئەفسانەکەیان هەر بەرز دەبێت.
+      </p>
+    </div>
+  </section>
+
+  <!-- Add this new section after your current .epic-story-section and before the mafia-table-section -->
+
+  <section class="epic-story-section">
+    <div class="epic-story-title"><i class="fa-solid fa-skull-crossbones"></i> خوێن، خیانەت و براوەری: ڕاستیەکی زۆرتر </div>
+    <div class="epic-story-body">
+      <p>
+        <b>تۆڵەی ژیار</b><br>
+        بەرزبوونی خشتە تەنها پارە و هێز نەبوو—کاری کەسیش بوو. باوکی ژیار، بازرگانێکی بەناوبانگ، بە شێوەیەکی نهێنی لەلایەن باوکی ئەمان، دیپلۆماتێکی تورک، کوژرا و بە یارمەتیدانی هێزە تایبەتییەکانی سوریا شەڕەکەی شاردەوە. ئازاری ئەو دۆخە نزیک بوو ژیار تێکشکاند، بەڵام بە یارمەتیدانی شێروان، ئازارەکە گۆڕی بە هێزی تۆڵە. مانگێک خشتە زانیاری کۆکرد، پارەی پۆستەکان دا و هەموو هەنگاوەکان لەسەر باوکی ئەمان گرت. لە کۆتایی، ژیار، شێروان و یاسر، ڕەشەبەری باوکی ئەمان لە حەلبو کوشت و هیچ شتێک جێ نەهێشت.
+      </p>
+      <p>
+        <b>کێشەی خۆشەویست</b><br>
+        ئەمان، هاوسەرە نهێنیی ژیار، ڕاستی فێری بوو. نێوان خۆشەویستی و تۆڵە، پلانێکی کوشتنی ژیار دا. بەڵام براکی وەستاند و وتی ئەگەر ژیار بکۆژێت، خۆییش دەکۆژرێت. ئەمان لە ئیستانبول ون بوو و ژیار هەوڵی فرامۆشکردنی دا. شێروان یارمەتیدا و وتی خێزان هەموو شتێکە.
+      </p>
+      <p>
+        <b>ڕزگارکردنی زانیار</b><br>
+        کاتێک زانیار، هاوڕێی منداڵی ژیار، لەلایەن شێروانیەکانەوە دزرا و لە قەڵایەکی نەگونجاو لە زاگرۆس گیرا بوو، خشتە هەرگیز ڕازی نەبوو بە شکست. یاسر سیستەم هەک کرد، شێروان هێرش کرد و ڕامین ڕێگای دەرچوون پاک کرد. ژیار خۆی زانیار ڕزگار کرد.
+      </p>
+      <p>
+        <b>خۆشەویستی خەتەرناکەکانی ڕامین</b><br>
+        ڕامین لەگەڵ لەیلا، سەرۆکی مافیای دهوک، خۆشەویستی کرد. لەیلا بە شێوەیەکی نهێنی ڕامین تۆمار کرد و هەوڵی شانتاژکردن دا. بەڵام یاسر ڕێگەی دیجیتاڵی فاش کرد، شێروان پارێزگاکانی وەستاند و ژیار ڕێککەوتنێکی نهێنی کرد. لەیلا ون بوو و ناوی خشتە بەرزتر بوو.
+      </p>
+      <p>
+        <b>نهێنیەکان، سیایەتی و ژیانی ماوە</b><br>
+        چیرۆکی خشتە چیرۆکی زخم و ژیانی ماوە. ژیار بە یارمەتیدانی شێروان لە ئازاری باوکە تێپەڕی. یاسر ئیمپراتۆریەتی دیجیتاڵی پاراست و ڕامین هەرگیز خیانەت نەکرد. هەر ساڵ دژمنێکی نوێ، پارەیەکی نوێ و زخمێکی نوێ، بەڵام خشتە هەمیشە ماوە. لە سیایەتی کوردستان، ئەفسانەکەیان هەر بەرز دەبێت.
+      </p>
+      <p>
+        <b>میراث</b><br>
+        جیهان تەنها پارە و هێز دەبینێت، بەڵام ڕاستی چوار برا لە خوێن، وەفاداری و پیوەندی براوەری نووسراوە. چیرۆکەکە هێشتا بەسەر نەچووە.
+      </p>
+    </div>
+  </section>
+
+  <section class="mafia-table-section">
+    <div class="mafia-table-title"><i class="fa-solid fa-gun"></i> Mafia Table of Kurdistan <i class="fa-solid fa-gun"></i></div>
+    <table class="mafia-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Specialty</th>
+          <th>Role</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="leader-row">
+          <td><span class="rank-badge">Leader</span></td>
+          <td>Zhiyar</td>
+          <td>Negotiation, Strategy, International Relations, Money Laundering</td>
+          <td>Deals with other mafias, never loses, manages global alliances, controls all major decisions, has diplomatic immunity in several countries.</td>
+          <td style="color:#27ae60;font-weight:bold;">Active</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge">Left Hand</span></td>
+          <td>Sherwan</td>
+          <td>Weapons, Security, Smuggling, Cyber Defense</td>
+          <td>Handles guns, protection, logistics, oversees arms deals in Turkey and Pakistan, manages digital security for the table.</td>
+          <td style="color:#27ae60;font-weight:bold;">Active</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge">Consigliere</span></td>
+          <td>Yasr</td>
+          <td>Finance, Intelligence, Crypto, Hacking</td>
+          <td>Money, information, secret deals, manages crypto wallets, leads hacking operations in Pakistan, controls the intelligence network.</td>
+          <td style="color:#27ae60;font-weight:bold;">Active</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge">Enforcer</span></td>
+          <td>Ramin</td>
+          <td>Operations, Enforcement, Surveillance, Interrogation</td>
+          <td>Enforces rules, collects debts, leads surveillance teams, expert in interrogation and counter-espionage.</td>
+          <td style="color:#27ae60;font-weight:bold;">Active</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="intel-section">
+    <div class="intel-title"><i class="fa-solid fa-user-secret"></i> Intelligence Operations in Pakistan <i class="fa-solid fa-user-secret"></i></div>
+    <div class="intel-desc">
+      The Kurdistan Mafia Table has a powerful intelligence and hacking network in Pakistan.<br>
+      They control cyber operations, gather information, and run underground hacking teams.<br>
+      Below are glimpses of their digital empire and mafia activities.
+    </div>
+    <div class="intel-gallery">
+      <img class="intel-img" src="1.webp" alt="Hacker 1">
+      <img class="intel-img" src="2.webp" alt="Hacker 2">
+      <img class="intel-img" src="3.jpg" alt="Mafia 1">
+      <img class="intel-img" src="4.webp" alt="Mafia 2">
+      
+    </div>
+  </section>
+
+  <!-- Timeline / History Section -->
+  <section class="timeline-section">
+    <div class="timeline-title"><i class="fa-solid fa-clock-rotate-left"></i> Rise of the Table</div>
+    <div class="timeline">
+      <div class="timeline-event">
+        <div class="timeline-icon"><i class="fa-solid fa-flag"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">2012</div>
+          <div class="timeline-desc">The four brothers unite and form the Kurdistan Mafia Table.</div>
+        </div>
+      </div>
+      <div class="timeline-event">
+        <div class="timeline-icon"><i class="fa-solid fa-gun"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">2015</div>
+          <div class="timeline-desc">First major operation: takeover of Erbil’s underground casinos.</div>
+        </div>
+      </div>
+      <div class="timeline-event">
+        <div class="timeline-icon"><i class="fa-solid fa-user-secret"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">2018</div>
+          <div class="timeline-desc">Expansion into international intelligence and cyber operations in Pakistan.</div>
+        </div>
+      </div>
+      <div class="timeline-event">
+        <div class="timeline-icon"><i class="fa-solid fa-globe"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">2023</div>
+          <div class="timeline-desc">Global alliances established. The Table’s influence reaches Istanbul, Dubai, and beyond.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add this section after your timeline-section and before the map-section -->
+  <section class="battle-section">
+  <div class="battle-title"><i class="fa-solid fa-fire"></i> The Legendary Battle: Four Brothers vs Turkish Mafias</div>
+  <div class="battle-arena">
+    <div class="mafia-team">
+      <div class="fighter" style="--color:#ffd700;">
+        <img src="zhiko.jpg" alt="Zhiyar" class="fighter-img">
+        <div class="fighter-name">Zhiyar</div>
+      </div>
+      <div class="fighter" style="--color:#e63946;">
+        <img src="sherwan.jpg" alt="Sherwan" class="fighter-img">
+        <div class="fighter-name">Sherwan</div>
+      </div>
+      <div class="fighter" style="--color:#a8dadc;">
+        <img src="yasr.jpg" alt="Yasr" class="fighter-img">
+        <div class="fighter-name">Yasr</div>
+      </div>
+      <div class="fighter" style="--color:#bdbdbd;">
+        <img src="ramo.jpg" alt="Ramin" class="fighter-img">
+        <div class="fighter-name">Ramin</div>
+      </div>
+    </div>
+    <div class="vs-label" id="battleVsLabel">VS</div>
+    <div class="mafia-team enemy">
+      <div class="fighter enemy-fighter" style="--color:#222;">
+        <img src="yamach.jpg" alt="Turkish Mafia 1" class="fighter-img">
+        <div class="fighter-name">yamach kochovali</div>
+      </div>
+      <div class="fighter enemy-fighter" style="--color:#222;">
+        <img src="eshref.webp" alt="Turkish Mafia 2" class="fighter-img">
+        <div class="fighter-name">eshref</div>
+      </div>
+      <div class="fighter enemy-fighter" style="--color:#222;">
+        <img src="mustafa.webp" alt="Turkish Mafia 3" class="fighter-img">
+        <div class="fighter-name">muste</div>
+      </div>
+      <div class="fighter enemy-fighter" style="--color:#222;">
+        <img src="cumali.webp" alt="Turkish Mafia 4" class="fighter-img">
+        <div class="fighter-name">cumali</div>
+      </div>
+    </div>
+    <button class="battle-btn" id="startBattleBtn"><i class="fa-solid fa-bolt"></i> Start Animation</button>
+    <div class="battle-log" id="battleLog"></div>
+  </div>
+</section>
+
+  <!-- Interactive Map Section -->
+  <section class="map-section">
+    <div class="map-title"><i class="fa-solid fa-map-location-dot"></i> Territories & Influence</div>
+    <div class="map-container">
+      <img src="kurdistan.webp" alt="Kurdistan Map" class="map-img" usemap="#territorymap">
+      <map name="territorymap">
+        <area shape="circle" coords="120,80,30" alt="Erbil" title="Erbil - Zhiyar" onclick="showTerritory('Erbil', 'Zhiyar')" />
+        <area shape="circle" coords="220,140,30" alt="Sulaymaniyah" title="Sulaymaniyah - Sherwan" onclick="showTerritory('Sulaymaniyah', 'Sherwan')" />
+        <area shape="circle" coords="320,100,30" alt="Duhok" title="Duhok - Yasr" onclick="showTerritory('Duhok', 'Yasr')" />
+        <area shape="circle" coords="180,200,30" alt="Kirkuk" title="Kirkuk - Ramin" onclick="showTerritory('Kirkuk', 'Ramin')" />
+      </map>
+      <div id="territoryInfo" class="territory-info"></div>
+    </div>
+  </section>
+
+  <!-- Mafia Code / Rules Section -->
+  <section class="code-section">
+    <div class="code-title"><i class="fa-solid fa-scroll"></i> The Code of the Table</div>
+    <div class="code-scroll">
+      <ul>
+        <li><b>Loyalty</b> to the Table above all.</li>
+        <li><b>Silence</b> is sacred. Never betray secrets.</li>
+        <li><b>Respect</b> the chain of command.</li>
+        <li><b>Honor</b> your word and your brothers.</li>
+        <li><b>Strength</b> in unity, never in division.</li>
+        <li><b>Family</b> is everything.</li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+    // Mafia members data
+    const members = [
+      {
+        name: "Zhiyar",
+        rank: "Leader",
+        photo: "zhiko.jpg",
+        desc: "The mastermind and undisputed leader of the table. Zhiyar is known for his sharp mind, charisma, and ability to outsmart any rival. He never loses a negotiation and always keeps the family one step ahead.",
+        works: "Negotiates with other mafias, plans all major operations, manages global alliances, controls all major decisions, and has diplomatic immunity in several countries.",
+        extra: "Rumored to have connections in every city. Fluent in Kurdish, Turkish, and English. His word is law. Has a private jet and a secret vault in Switzerland.",
+        money: "Controls over $1.5 million in assets, owns several businesses in Erbil and Istanbul, and manages the mafia's offshore accounts.",
+        intel: "Leads the international intelligence network, especially in Pakistan. Has informants in government and police.",
+        guards: []
+      },
+      {
+        name: "Sherwan",
+        rank: "Left Hand",
+        photo: "sherwan.jpg",
+        desc: "Sherwan is the trusted left hand of Zhiyar. He is the weapons expert and head of security. No one gets close to the table without his approval.",
+        works: "Handles all gun deals, oversees security, manages logistics, and coordinates arms smuggling routes through Turkey and Pakistan.",
+        extra: "Known for his loyalty and deadly aim. Feared by enemies. Has a collection of rare firearms and is a black belt in judo.",
+        money: "Manages $500,000 in weapons and security assets. Runs a private security company as a front.",
+        intel: "Operates cyber defense and counter-surveillance teams in Pakistan. Has contacts with local arms dealers and hackers.",
+        guards: []
+      },
+      {
+        name: "Yasr",
+        rank: "Consigliere",
+        photo: "yasr.jpg",
+        desc: "Yasr is the brains behind the family's finances and intelligence. He knows where every dollar goes and keeps tabs on all rivals.",
+        works: "Manages money, gathers information, arranges secret deals, and leads hacking operations in Pakistan.",
+        extra: "Has a network of informants, is a master of disguise, and speaks five languages. Expert in crypto and digital forensics.",
+        money: "Controls $700,000 in crypto wallets and cash. Invests in tech startups and launders money through digital currencies.",
+        intel: "Runs the hacking teams in Pakistan. Responsible for cyber attacks, data theft, and digital espionage.",
+        guards: []
+      },
+      {
+        name: "Ramin",
+        rank: "Enforcer",
+        photo: "ramo.jpg",
+        desc: "Ramin is the muscle of the group. He enforces the rules, collects debts, and makes sure everyone respects the table.",
+        works: "Leads operations, collects debts, handles enforcement, and manages surveillance teams.",
+        extra: "His presence alone is enough to keep order. Expert in interrogation and counter-espionage. Has a scar from a failed coup.",
+        money: "Controls $300,000 in operational funds. Runs underground casinos and protection rackets.",
+        intel: "Leads surveillance and counter-intelligence missions in Pakistan. Tracks rival gangs and corrupt officials.",
+        guards: []
+      }
+    ];
+
+    // Render mafia members
+    function renderMembers() {
+      const container = document.getElementById('mafiaMembers');
+      container.innerHTML = '';
+      members.forEach((m, idx) => {
+        const card = document.createElement('div');
+        card.className = 'member-card';
+        card.innerHTML = `
+          <img src="${m.photo}" alt="${m.name}" class="member-photo" id="photo${idx}">
+          <div class="member-rank"><i class="fa-solid fa-crown"></i> ${m.rank}</div>
+          <div class="member-name">${m.name}</div>
+          <div class="member-desc" id="desc${idx}">${m.desc}</div>
+          <div class="member-works" id="works${idx}">${m.works}</div>
+          <div class="member-extra" id="extra${idx}">${m.extra}</div>
+          <div class="member-money" id="money${idx}"><i class="fa-solid fa-money-bill-wave"></i> ${m.money}</div>
+          <div class="member-intel" id="intel${idx}"><i class="fa-solid fa-user-secret"></i> ${m.intel}</div>
+          <div class="guards-section">
+            <div class="guards-title"><i class="fa-solid fa-user-shield"></i> Guards</div>
+            <div class="guards-list" id="guards${idx}">
+              ${
+                m.guards.length === 0
+                  ? `<div class="no-guards">No guards assigned yet.</div>`
+                  : m.guards
+                      .map(
+                        (g, gidx) => `
+              <div class="guard-card">
+                <div class="guard-avatar">
+                  <i class="fa-solid fa-user-secret"></i>
+                </div>
+                <div class="guard-info">
+                  <span class="guard-name">${g}</span>
+                  <button class="remove-guard-btn" title="Remove" onclick="removeGuard(${idx},${gidx})">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+            `
+                      )
+                      .join("")
+              }
+            </div>
+            <form class="add-guard-form" onsubmit="addGuard(event,${idx})">
+              <input type="text" placeholder="Guard name..." id="guardInput${idx}" required>
+              <button type="submit"><i class="fa-solid fa-plus"></i> Add</button>
+            </form>
+          </div>
+        `;
+        // Animation and fog overlay on photo click
+        setTimeout(() => {
+          const photo = card.querySelector('.member-photo');
+          photo.onclick = () => {
+            photo.classList.remove('animated');
+            void photo.offsetWidth; // trigger reflow
+            photo.classList.add('animated');
+            showInfo(idx);
+            showFogOverlay(idx);
+          };
+        }, 0);
+        container.appendChild(card);
+      });
+    }
+
+    // Show info with animation
+    function showInfo(idx) {
+      // Animate description, works, extra, money, intel
+      ['desc', 'works', 'extra', 'money', 'intel'].forEach(id => {
+        const el = document.getElementById(id + idx);
+        if (el) {
+          el.style.opacity = 0.3;
+          setTimeout(() => {
+            el.style.opacity = 1;
+          }, 300);
+        }
+      });
+    }
+
+    // --- FOG OVERLAY LOGIC ---
+    function showFogOverlay(idx) {
+      // Remove any existing overlay
+      const oldFog = document.getElementById('fogOverlay');
+      if (oldFog) oldFog.remove();
+
+      // Build overlay
+      const fog = document.createElement('div');
+      fog.className = 'fog-overlay';
+      fog.id = 'fogOverlay';
+      fog.onclick = function(e) {
+        if (e.target === fog) fog.remove();
+      };
+
+      // Copy the member card content for the overlay
+      const m = members[idx];
+      const fogContent = document.createElement('div');
+      fogContent.className = 'fog-content';
+      fogContent.innerHTML = `
+        <button class="fog-close-btn" onclick="document.getElementById('fogOverlay').remove()" title="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img src="${m.photo}" alt="${m.name}" class="member-photo">
+        <div class="member-rank"><i class="fa-solid fa-crown"></i> ${m.rank}</div>
+        <div class="member-name">${m.name}</div>
+        <div class="member-desc">${m.desc}</div>
+        <div class="member-works">${m.works}</div>
+        <div class="member-extra">${m.extra}</div>
+        <div class="member-money"><i class="fa-solid fa-money-bill-wave"></i> ${m.money}</div>
+        <div class="member-intel"><i class="fa-solid fa-user-secret"></i> ${m.intel}</div>
+        <div class="guards-section">
+          <div class="guards-title"><i class="fa-solid fa-user-shield"></i> Guards</div>
+          <div class="guards-list">
+            ${
+              m.guards.length === 0
+                ? `<div class="no-guards">No guards assigned yet.</div>`
+                : m.guards
+                    .map(
+                      (g) => `
+              <div class="guard-card">
+                <div class="guard-avatar">
+                  <i class="fa-solid fa-user-secret"></i>
+                </div>
+                <div class="guard-info">
+                  <span class="guard-name">${g}</span>
+                </div>
+              </div>
+            `
+                    )
+                    .join("")
+            }
+          </div>
+        </div>
+      `;
+      fog.appendChild(fogContent);
+      document.body.appendChild(fog);
+    }
+
+    // Guards logic
+    window.addGuard = function(event, idx) {
+      event.preventDefault();
+      const input = document.getElementById('guardInput' + idx);
+      const name = input.value.trim();
+      if (name) {
+        members[idx].guards.push(name);
+        renderMembers();
+      }
+    };
+    window.removeGuard = function(memberIdx, guardIdx) {
+      members[memberIdx].guards.splice(guardIdx, 1);
+      renderMembers();
+    };
+    
+
+    // Initial render
+    renderMembers();
+
+    // Fade-in effect for the whole site after intro splash
+    window.addEventListener('DOMContentLoaded', () => {
+      // Smoke animation
+      const smokeBg = document.querySelector('.smoke-bg');
+      for(let i=0;i<8;i++){
+        const s = document.createElement('div');
+        s.className = 'smoke';
+        s.style.left = (Math.random()*90+2)+'vw';
+        s.style.animationDelay = (Math.random()*10)+'s';
+        s.style.opacity = 0.12 + Math.random()*0.13;
+        s.style.width = (180+Math.random()*120)+'px';
+        s.style.height = (90+Math.random()*80)+'px';
+        smokeBg.appendChild(s);
+      }
+
+      // Intro splash logic
+      setTimeout(() => {
+        document.getElementById('introSplash').style.opacity = 0;
+        setTimeout(() => {
+          document.getElementById('introSplash').style.display = 'none';
+          document.body.style.opacity = 1;
+        }, 1100);
+      }, 2600);
+
+      // Music logic
+      const music = document.getElementById('bgMusic');
+      const toggle = document.getElementById('musicToggle');
+      const icon = document.getElementById('musicIcon');
+      let playing = false;
+      toggle.onclick = () => {
+        if (playing) {
+          music.pause();
+          icon.className = "fa-solid fa-volume-xmark";
+        } else {
+          music.play();
+          icon.className = "fa-solid fa-volume-high";
+        }
+        playing = !playing;
+      };
+      // Optional: auto-play music after user interaction
+      document.body.addEventListener('click', function autoPlayOnce() {
+        if (!playing) {
+          music.play();
+          icon.className = "fa-solid fa-volume-high";
+          playing = true;
+        }
+        document.body.removeEventListener('click', autoPlayOnce);
+      });
+    });
+
+    // Show territory info on map click
+    window.showTerritory = function(city, boss) {
+      document.getElementById('territoryInfo').innerHTML =
+        `<b>${city}</b> is under the control of <b>${boss}</b>. This territory is crucial for the Table's operations, providing key resources and strategic advantages.`;
+    }
+
+    document.getElementById('startBattleBtn').onclick = async function() {
+  const left = document.querySelectorAll('.mafia-team:not(.enemy) .fighter');
+  const right = document.querySelectorAll('.mafia-team.enemy .fighter');
+  const log = document.getElementById('battleLog');
+  const vs = document.getElementById('battleVsLabel');
+  log.innerHTML = '';
+  vs.style.transform = 'scale(1.2)';
+  // Reset fighters
+  left.forEach(f => f.classList.remove('hit', 'win'));
+  right.forEach(f => f.classList.remove('hit', 'win'));
+  await sleep(400);
+
+  // Animation sequence
+  log.innerHTML = "The Turkish mafias challenge the Table in Istanbul...";
+  await sleep(1200);
+
+  for (let i = 0; i < 4; i++) {
+    left[i].classList.add('win');
+    right[i].classList.add('hit');
+    log.innerHTML = `<b>${left[i].querySelector('.fighter-name').textContent}</b> defeats <b>${right[i].querySelector('.fighter-name').textContent}</b>!`;
+    await sleep(1200);
+    left[i].classList.remove('win');
+    right[i].classList.remove('hit');
+  }
+
+  vs.style.transform = 'scale(1)';
+  log.innerHTML = "<b>The Table stands victorious. Istanbul is theirs.</b>";
+  left.forEach(f => f.classList.add('win'));
+  await sleep(1800);
+  left.forEach(f => f.classList.remove('win'));
+};
+
+function sleep(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
+  </script>
+</body>
+</html>
